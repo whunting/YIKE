@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         AVOSCloud.initialize(this, "MN1c6wWL0NSifRqIfayFkDTx-gzGzoHsz", "b8GERSv31BN4xo7dGkc2fdPC");
         AVOSCloud.setDebugLogEnabled(true);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
 
         // 测试 SDK 是否正常工作的代码
         AVObject testObject = new AVObject("TestObject");

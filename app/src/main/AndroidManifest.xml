@@ -20,7 +20,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/photo_round1"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
@@ -38,6 +38,7 @@
         <!-- 实时通信模块、推送 END -->
         <activity
             android:name=".MainActivity"
+            android:label="@string/app_name"
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -47,17 +48,13 @@
         </activity>
         <activity
             android:name=".LoginActivity"
-            android:label="@string/title_activity_login">
-            <intent-filter>
-                <action android:name="com.example.hunting.YIKE.LoginActivity" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:label="登录界面">
         </activity>
         <activity android:name="com.avos.avoscloud.feedback.ThreadActivity" />
         <activity
             android:name=".RegisterActivity"
-            android:label="@string/title_activity_register"></activity>
+            android:label="注册">
+        </activity>
     </application>
 
 </manifest>

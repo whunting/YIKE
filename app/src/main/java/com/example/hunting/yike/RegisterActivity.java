@@ -23,66 +23,53 @@ import android.widget.Toast;
 import com.avos.avoscloud.AVAnalytics;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVUser;
-import com.avos.avoscloud.LogInCallback;
+import com.avos.avoscloud.SignUpCallback;
 
-public class LoginActivity extends AppCompatActivity  {
+public class RegisterActivity extends AppCompatActivity {
     private AutoCompleteTextView mUsernameView;
     private EditText mPasswordView;
     private View mProgressView;
-    private View mLoginFormView;
+    private View mRegisterFormView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_register);
 
-        if(AVUser.getCurrentUser()!=null){
-            startActivity(new Intent(LoginActivity.this, MainActivity.class));
-            LoginActivity.this.finish();
-        }
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("登录");
-        mUsernameView = (AutoCompleteTextView) findViewById(R.id.username);
-
+        // Set up the register form;
+        mUsernameView=(AutoCompleteTextView)findViewById(R.id.username);
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
+                if (id == R.id.register || id == EditorInfo.IME_NULL) {
+                    attemptRegister();
                     return true;
                 }
                 return false;
             }
         });
 
-        Button mUsernameLoginButton = (Button) findViewById(R.id.username_login_button);
-        mUsernameLoginButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                attemptLogin();
-            }
-        });
 
-        Button mUsernameRegisterButton = (Button) findViewById(R.id.username_register_button);
-        mUsernameRegisterButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
-                LoginActivity.this.finish();
-            }
-        });
+        Button musernameSignInButton = (Button) findViewById(R.id.username_register_button);
+        musernameSignInButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    attemptRegister();
+                }
+            });
 
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
-    }
+            mRegisterFormView = findViewById(R.id.register_form);
+            mProgressView = findViewById(R.id.register_progress);
+        }
 
-    private void attemptLogin() {
+    private void attemptRegister() {
         mUsernameView.setError(null);
         mPasswordView.setError(null);
 
-        final String username = mUsernameView.getText().toString();
-        final String password = mPasswordView.getText().toString();
+        String username = mUsernameView.getText().toString();
+        String password = mPasswordView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
@@ -92,7 +79,6 @@ public class LoginActivity extends AppCompatActivity  {
             focusView = mPasswordView;
             cancel = true;
         }
-
         if (TextUtils.isEmpty(username)) {
             mUsernameView.setError(getString(R.string.error_field_required));
             focusView = mUsernameView;
@@ -104,29 +90,34 @@ public class LoginActivity extends AppCompatActivity  {
         } else {
             showProgress(true);
 
-            AVUser.logInInBackground(username, password, new LogInCallback<AVUser>() {
+            AVUser user = new AVUser();// 新建 AVUser 对象实例
+            user.setUsername(username);// 设置用户名
+            user.setPassword(password);// 设置密码
+            user.signUpInBackground(new SignUpCallback() {
                 @Override
-                public void done(AVUser avUser, AVException e) {
+                public void done(AVException e) {
                     if (e == null) {
-                        LoginActivity.this.finish();
-                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                        // 注册成功，把用户对象赋值给当前用户 AVUser.getCurrentUser()
+                        startActivity(new Intent(RegisterActivity.this, MainActivity.class));
+                        RegisterActivity.this.finish();
                     } else {
+                        // 失败的原因可能有多种，常见的是用户名已经存在。
                         showProgress(false);
-                        Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegisterActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
             });
         }
+    }
+    private boolean isusernameValid(String username) {
+        //TODO: Replace this with your own logic
+        return username.contains("@");
     }
 
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
         return password.length() > 4;
     }
-
-    /**
-     * Shows the progress UI and hides the login form.
-     */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     private void showProgress(final boolean show) {
         // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
@@ -135,12 +126,12 @@ public class LoginActivity extends AppCompatActivity  {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
+            mRegisterFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+            mRegisterFormView.animate().setDuration(shortAnimTime).alpha(
                     show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+                    mRegisterFormView.setVisibility(show ? View.GONE : View.VISIBLE);
                 }
             });
 
@@ -156,7 +147,7 @@ public class LoginActivity extends AppCompatActivity  {
             // The ViewPropertyAnimator APIs are not available, so simply show
             // and hide the relevant UI components.
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+            mRegisterFormView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
     }
 
