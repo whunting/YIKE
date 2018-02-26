@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         AVOSCloud.setDebugLogEnabled(true);
         setContentView(R.layout.activity_main);
 
-        ArrayAdapter<String> foodAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, Food.getALLFoods());
+        ArrayAdapter<Food> foodAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, Food.getALLFoods());
         ListView listView = findViewById(R.id.food_listView);
         listView.setAdapter(foodAdapter);
 
