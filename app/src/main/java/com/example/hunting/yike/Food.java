@@ -18,13 +18,13 @@ public class Food {
     private int imageId;
     private String desc;
 
-    public Food(String name,int imageId,String desc){
+    private Food(String name,int imageId,String desc){
         this.name=name;
         this.imageId=imageId;
         this.desc=desc;
     }
 
-    public static List<Food> getALLFoods(){
+    private static List<Food> getALLFoods(){
         List<Food> foods= new ArrayList<Food>();
         foods.add(new Food("油焖虾",R.drawable.youmenxia,"好吃"));
         foods.add(new Food("玫瑰扁食",R.drawable.rosedumpling,"好看"));
