@@ -25,6 +25,12 @@ import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.SignUpCallback;
 
+/**
+ * @author whunting
+ * @date 2018-3-6
+ *
+ * 实现用户注册
+ */
 public class RegisterActivity extends AppCompatActivity {
     private AutoCompleteTextView mUsernameView;
     private EditText mPasswordView;
@@ -38,8 +44,8 @@ public class RegisterActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         // Set up the register form;
-        mUsernameView=(AutoCompleteTextView)findViewById(R.id.username);
-        mPasswordView = (EditText) findViewById(R.id.password);
+        mUsernameView = findViewById(R.id.username);
+        mPasswordView = findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -52,8 +58,8 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
 
-        Button musernameSignInButton = (Button) findViewById(R.id.username_register_button);
-        musernameSignInButton.setOnClickListener(new OnClickListener() {
+        Button mUsernameRegisterButton = findViewById(R.id.username_register_button);
+        mUsernameRegisterButton.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     attemptRegister();
@@ -90,9 +96,9 @@ public class RegisterActivity extends AppCompatActivity {
         } else {
             showProgress(true);
 
-            AVUser user = new AVUser();// 新建 AVUser 对象实例
-            user.setUsername(username);// 设置用户名
-            user.setPassword(password);// 设置密码
+            AVUser user = new AVUser();
+            user.setUsername(username);
+            user.setPassword(password);
             user.signUpInBackground(new SignUpCallback() {
                 @Override
                 public void done(AVException e) {
@@ -118,37 +124,30 @@ public class RegisterActivity extends AppCompatActivity {
         //TODO: Replace this with your own logic
         return password.length() > 4;
     }
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+
+    /**
+     * 控制窗体和进度条的渐变动画
+     *
+     * @param show 是否展示动画
+     */
     private void showProgress(final boolean show) {
-        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-        // for very easy animations. If available, use these APIs to fade-in
-        // the progress spinner.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+        int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+        mRegisterFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+        mRegisterFormView.animate().setDuration(shortAnimTime).alpha(
+                show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mRegisterFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+            }
+        });
 
-            mRegisterFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-            mRegisterFormView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mRegisterFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-                }
-            });
-
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mProgressView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-                }
-            });
-        } else {
-            // The ViewPropertyAnimator APIs are not available, so simply show
-            // and hide the relevant UI components.
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mRegisterFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-        }
+        mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+        mProgressView.animate().setDuration(shortAnimTime).alpha(
+                show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            }
+        });
     }
 
     @Override
