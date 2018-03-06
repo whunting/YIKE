@@ -3,7 +3,15 @@ package com.example.hunting.yike;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * @author whunting
+ * @date 2018-3-6
+ *
+ * Food类
+ * name: 食物名称
+ * imageId: 图片ID
+ * desc: 描述文本
+ */
 public class Food {
 
     private String name;
