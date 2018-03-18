@@ -19,7 +19,7 @@
 ListView的2.0版本<br>
 并且更改了一下图片格式<br>
 目前它的状态是这样的：<br>
-！[image](https://raw.githubusercontent.com/whunting/YIKE/master/Sample/sample1.png)
+![image](https://raw.githubusercontent.com/whunting/YIKE/master/Sample/sample1.png)
 
 ----------
 ##### YIKE  吃我一颗安利
