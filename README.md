@@ -14,10 +14,12 @@
   2.交流
   
 ## 突发奇想的更新日志
-3.18 隔了十天终于在今天绿了一下<br>
-     ListView的2.0版本<br>
-     并且更改了一下图片格式<br>
-     目前它的状态是这样的：
+3.18 
+隔了十天终于在今天绿了一下<br>
+ListView的2.0版本<br>
+并且更改了一下图片格式<br>
+目前它的状态是这样的：<br>
+！[image](https://raw.githubusercontent.com/whunting/YIKE/master/Sample/sample1.png)
 
 ----------
 ##### YIKE  吃我一颗安利
